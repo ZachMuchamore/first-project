@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,7 +14,8 @@ public class Playerscripts : MonoBehaviour
     public Vector2 boxSize;
     bool grounded;
     public float castDistance;
-   
+    private bool lastDir;
+
 
     void Start()
     {
@@ -26,6 +28,7 @@ public class Playerscripts : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        UpdateDirection();
         LayerMask groundLayer;
         sr.flipX = false;
         anim.SetBool("player_run", false);
@@ -43,6 +46,7 @@ public class Playerscripts : MonoBehaviour
         }
         if ( Input.GetKey("a") == true ) // move left
         {
+            gameObject.transform.localScale = new Vector3(-6, 6, 6);
             anim.SetBool("player_run", true);
             print("player pressed left");
             transform.position = new Vector2(transform.position.x - (speed * Time.deltaTime), transform.position.y);
@@ -50,6 +54,7 @@ public class Playerscripts : MonoBehaviour
 
         if ( Input.GetKey("d") == true ) // move right 
         {
+            gameObject.transform.localScale = new Vector3(6, 6, 6);
             anim.SetBool("player_run", true);
             print("player pressed right");
             transform.position = new Vector2(transform.position.x + (speed * Time.deltaTime), transform.position.y);
@@ -84,6 +89,26 @@ public class Playerscripts : MonoBehaviour
         {
             Gizmos.DrawWireCube(transform.position-transform.up * castDistance, boxSize);
         }
+        void UpdateDirection()
+        {
+            if (Input.GetAxis("Horizontal") < 0)
+            {
+                sr.flipX = false;
+                lastDir = false;
+            }
+            else if (Input.GetAxis("Horizontal") > 0)
+            {
+                sr.flipX = true;
+                lastDir = true;
+            }
+            else sr.flipX = lastDir;
+        }
+    }
+
+    private void UpdateDirection()
+    {
+        throw new NotImplementedException();
     }
 }
+
 

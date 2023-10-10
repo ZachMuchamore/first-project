@@ -10,7 +10,7 @@ public class EnemyScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        speed = 1f;
+        speed = 2f;
         anim = GetComponent<Animator>();
     }
 
@@ -24,24 +24,24 @@ public class EnemyScript : MonoBehaviour
         print(distance);
         if (distance < 0)
         {
-            transform.transform.localScale = new Vector3(-3, 3, 3);
+            transform.transform.localScale = new Vector3(-1.25f, 1.25f, 1.25f);
             print("flipped");
         }
         else
         {
-            transform.transform.localScale = new Vector3(3, 3, 3);
+            transform.transform.localScale = new Vector3(1.25f, 1.25f, 1.25f);
         }
         Debug.Log("dist=" + distance);
 
         if ( distance > 2  || distance <-2 )
         {
             transform.position = Vector2.MoveTowards(this.transform.position, player.transform.position, speed * Time.deltaTime);
-            anim.SetBool("enemy run", true);
+            anim.SetBool("running",true);
+            
         }
         else
         {
-            anim.SetBool("enemy run", false);
+            anim.SetBool("running", false);
         }
-       
     }
 }

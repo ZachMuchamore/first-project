@@ -8,6 +8,7 @@ public class Playerscripts : MonoBehaviour
 
 {
     
+    HelperScript helper;
     Animator anim;
     SpriteRenderer sr;
     // Start is called before the first frame update
@@ -20,6 +21,7 @@ public class Playerscripts : MonoBehaviour
 
     void Start()
     {
+        helper = gameObject.AddComponent<HelperScript>();
         sr = GetComponent<SpriteRenderer>();
         print("start"); 
         rb = GetComponent<Rigidbody2D>();
@@ -29,10 +31,13 @@ public class Playerscripts : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
         anim.SetBool("player_run", false);
         anim.SetBool("player_jump", false);
         int speed = 5;
+        if( Input.GetKey("x"))
+        {
+            helper.FlipObject(true);
+        }
         if (Input.GetKey("e") == true) // press e to start sprinting 
         {
             print("player increasing speed");
@@ -61,7 +66,8 @@ public class Playerscripts : MonoBehaviour
             
 
         }
-        if (Input.GetKeyDown("space") == true) 
+        grounded = helper.DoRayCollisionCheck();
+        if (Input.GetKeyDown("space") == true && grounded == true) 
         {
             anim.SetBool("player_jump", true);
             rb.AddForce(new Vector3(0, 5, 0), ForceMode2D.Impulse);
@@ -76,6 +82,4 @@ public class Playerscripts : MonoBehaviour
             anim.SetTrigger("player_attack");
         }
     }
-
-    
 }

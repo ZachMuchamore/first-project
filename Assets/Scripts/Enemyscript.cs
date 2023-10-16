@@ -3,45 +3,53 @@ using UnityEngine;
 
 public class EnemyScript : MonoBehaviour
 {
-    public GameObject player;
+    Rigidbody2D rb;
+    Transform target;
+    Vector2 moveDirection;
+    HelperScript helper;
     public float speed;
     private float distance;
     public Animator anim;
+    public GameObject player;
+    public GameObject ghostEnemy;
     // Start is called before the first frame update
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
     void Start()
     {
-        speed = 2f;
+        speed = 1f;
         anim = GetComponent<Animator>();
+        helper = gameObject.AddComponent<HelperScript>();
+        target = GameObject.Find("player").transform;
     }
 
     // Update is called once per frame
     void Update()
     {
-        // distance = Vector2.Distance(transform.position, player.transform.position);
-        //Vector2 direction = player.transform.position - transform.forward;
-        distance = player.transform.position.x - transform.position.x;
-
-        print(distance);
-        if (distance < 0)
+        distance = player.transform.position.x - ghostEnemy.transform.position.x;
+        if(target)
         {
-            transform.transform.localScale = new Vector3(-1.25f, 1.25f, 1.25f);
+            Vector3 direction = (target.position - transform.position).normalized;
+            moveDirection = direction;
+        }
+        if(target)
+        {
+            rb.velocity = new Vector2(moveDirection.x, moveDirection.y) * speed;
+        }
+        helper.DoRayCollisionCheck();
+        print(distance);
+        if (distance > 0)
+        {
+            transform.transform.localScale = new Vector3(-2f, 2f, 2f);
             print("flipped");
         }
         else
         {
-            transform.transform.localScale = new Vector3(1.25f, 1.25f, 1.25f);
+            transform.transform.localScale = new Vector3(2f, 2f, 2f);
         }
         Debug.Log("dist=" + distance);
 
-        if ( distance > 2  || distance <-2 )
-        {
-            transform.position = Vector2.MoveTowards(this.transform.position, player.transform.position, speed * Time.deltaTime);
-            anim.SetBool("running",true);
-            
-        }
-        else
-        {
-            anim.SetBool("running", false);
-        }
     }
 }

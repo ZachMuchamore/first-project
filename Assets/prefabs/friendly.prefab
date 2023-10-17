@@ -186,3 +186,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fcc3ea199db79f41b012dc8606cb1dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 0
+  grounded: 0
+  pointA: {fileID: 0}
+  pointB: {fileID: 0}

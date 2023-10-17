@@ -10,15 +10,17 @@ public class HelperScript : MonoBehaviour
     public bool grounded;
     public void Start()
     {
+       
         groundLayerMask = LayerMask.GetMask("Ground");
     }
 
-    public bool DoRayCollisionCheck()
+    public bool DoRayCollisionCheck( float xoffs = 0f, float yoffs = 0f)
     {
         float raylength = 0.5f;
-        grounded = false;
+        Vector3 offset = new Vector3( xoffs , yoffs , 0 );
         RaycastHit2D hit;
-        hit = Physics2D.Raycast(transform.position, -Vector2.up, raylength, groundLayerMask);
+        grounded = false;
+        hit = Physics2D.Raycast(transform.position + offset, -Vector2.up, raylength, groundLayerMask);
         Color hitColor = Color.white;
         if (hit.collider != null)
         {
@@ -28,7 +30,7 @@ public class HelperScript : MonoBehaviour
         }
         
 
-        Debug.DrawRay(transform.position, -Vector2.up * raylength, hitColor);
+        Debug.DrawRay(transform.position + offset, -Vector2.up * raylength, hitColor);
 
         return grounded;
     }
